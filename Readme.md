@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Сергей Твардовский](https://up.htmlacademy.ru/javascript/12/user/428965).
-* Наставник: `Неизвестно`.
+* Наставник: Никита Ткачук.
 
 ---
 
