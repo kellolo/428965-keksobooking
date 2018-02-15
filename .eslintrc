@@ -1,7 +1,3 @@
-root: true
-
-env:
-  browser: true
-
-extends:
-  "htmlacademy/es5"
+{
+	"extends": "rallycoding"
+}
