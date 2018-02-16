@@ -12,7 +12,7 @@ var MAXROOMS = 5;
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
 
-//ОСНОВНАЯ ФУНКЦИЯ
+// ОСНОВНАЯ ФУНКЦИЯ
 
 var getRandom = function (min, max) {
   return Math.floor(min + Math.random() * max);
@@ -64,9 +64,8 @@ var generateData = function (shuffle, createUsers, users, xLocation, yLocation, 
         checkOut.push(chOut);
         photos.push(phot);
         totalFeatures.push(totFeat);
-
         j++;
-      } 
+      }
     }
 
     usersData = {
@@ -90,10 +89,11 @@ var generateData = function (shuffle, createUsers, users, xLocation, yLocation, 
 
   createUsers = function (incoming, newUser) {
     incoming = shuffle();
-
+    var xLocation;
+    var yLocation;
     while (users.length < USERS) {
-      var xLocation = getRandom(300, 600);
-      var yLocation = getRandom(300, 350);
+      xLocation = getRandom(300, 600);
+      yLocation = getRandom(300, 350);
 
       newUser = {
         author: {
