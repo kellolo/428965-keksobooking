@@ -22,11 +22,9 @@ var getRandom = function (min, max) {
 };
 
 var generateData = function (shuffle, createUsers, users, xLocation, yLocation, avatar, title, price, uType, rooms, guests, checkIn, checkOut, photos, totalFeatures, feature) {
-  xLocation = [];
-  yLocation = [];
+
   avatar = [];
   title = [];
-  price = [];
   uType = [];
   rooms = [];
   guests = [];
@@ -38,13 +36,11 @@ var generateData = function (shuffle, createUsers, users, xLocation, yLocation, 
 
   //ФУНКЦИЯ СОЗДАНИЯ МАССИВОВ ДАННЫХ ПО КАТЕГОРИЯМ С ЧАСТИЧНО НЕПОВТОРЯЮЩИМИСЯ МАССИВАМИ
 
-  shuffle = function (usersData, count, xLoc, yLoc, ava, tit, pri, uTy, roo, gue, chIn, chOut, phot, totFeat, feat) {
-    for (count = 0; count < USERS;) {
-      xLoc = getRandom(300, 600);
-      yLoc = getRandom(300, 350);
+  shuffle = function (usersData, ava, tit, uTy, roo, gue, chIn, chOut, phot, totFeat, feat) {
+    for (var j = 0; j < USERS;) {
+
       ava = getRandom(1, USERS);
       tit = TITLES[getRandom(0, TITLES.length)];
-      pri = getRandom(1000, 900000);
       uTy = TYPE[getRandom(0, 2)];
       roo = getRandom(1, MAXROOMS);
       gue = getRandom(1, 10);
@@ -61,12 +57,9 @@ var generateData = function (shuffle, createUsers, users, xLocation, yLocation, 
         }
       }
 
-      if (avatar.indexOf(ava) < 0 && title.indexOf(tit) < 0 && xLocation.indexOf(xLoc) < 0 && yLocation.indexOf(yLoc) < 0) {
+      if (avatar.indexOf(ava) < 0 && title.indexOf(tit) < 0) {
         avatar.push(ava);
-        xLocation.push(xLoc);
-        yLocation.push(yLoc);
         title.push(tit);
-        price.push(pri);
         uType.push(uTy);
         rooms.push(roo);
         guests.push(gue);
@@ -75,14 +68,12 @@ var generateData = function (shuffle, createUsers, users, xLocation, yLocation, 
         photos.push(phot);
         totalFeatures.push(totFeat);
 
-        count++;
+        j++;
 
       } 
     }
 
     usersData = {
-      xLocations: xLocation,
-      yLocations: yLocation,
       avatars: avatar,
       titles: title,
       prices: price,
@@ -105,18 +96,21 @@ var generateData = function (shuffle, createUsers, users, xLocation, yLocation, 
       incoming = shuffle();
 
       while (users.length < USERS) {
+        var xLocation = getRandom(300, 600);
+        var yLocation = getRandom(300, 350);
+
         newUser = {
           author: {
             avatar: 'img/avatars/user0' + incoming.avatars[users.length] + '.png'
           },
           location: {
-            x: incoming.xLocations[users.length],
-            y: incoming.yLocations[users.length]
+            x: xLocation,
+            y: yLocation
           },
           offer: {
             title: incoming.titles[users.length],
-            adress: incoming.xLocations[users.length] + ', ' + incoming.yLocations[users.length],
-            price: incoming.prices[users.length],
+            adress: xLocation  + ', ' + yLocation,
+            price: getRandom(1000, 900000),
             type: incoming.types[users.length],
             rooms: incoming.rooms[users.length],
             guests: incoming.guests[users.length],
@@ -140,20 +134,20 @@ var generateData = function (shuffle, createUsers, users, xLocation, yLocation, 
 var userTemplate;
 var fragment = document.createDocumentFragment();
 
-var generateTemplate = function (button, avatar, users, counter) {
+var generateTemplate = function (button, avatar, users) {
   users = generateData();
 
-  for (counter = 0; counter < USERS; counter++){
+  for (var i = 0; i < USERS; i++){
     button = document.createElement('button');
     avatar = document.createElement('img');
-    button.style.left = users[counter].location.x + 'px';
-    button.style.top = users[counter].location.y + 'px';
+    button.style.left = users[i].location.x + 'px';
+    button.style.top = users[i].location.y + 'px';
     button.classList.add('map__pin');
 
     avatar.style.width = 40 + 'px';
     avatar.style.height = 40 + 'px';
     avatar.draggable = 'false';
-    avatar.src = users[counter].author.avatar;
+    avatar.src = users[i].author.avatar;
 
     button.appendChild(avatar);
     fragment.appendChild(button);
