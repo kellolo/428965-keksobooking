@@ -61,7 +61,7 @@ var generateData = function (shuffle, createUsers, users, xLocation, yLocation, 
         }
       }
 
-      if (avatar.indexOf(ava) < 0 && title.indexOf(tit) < 0 && xLocation.indexOf(xLoc) < 0) {
+      if (avatar.indexOf(ava) < 0 && title.indexOf(tit) < 0 && xLocation.indexOf(xLoc) < 0 && yLocation.indexOf(yLoc) < 0) {
         avatar.push(ava);
         xLocation.push(xLoc);
         yLocation.push(yLoc);
