@@ -89,23 +89,23 @@ var generateData = function (shuffle, createUsers, users, xLocation, yLocation, 
 
   createUsers = function (incoming, newUser) {
     incoming = shuffle();
-    var xLocation;
-    var yLocation;
+    var xL;
+    var yL;
     while (users.length < USERS) {
-      xLocation = getRandom(300, 600);
-      yLocation = getRandom(300, 350);
+      xL = getRandom(300, 600);
+      yL = getRandom(300, 350);
 
       newUser = {
         author: {
           avatar: 'img/avatars/user0' + incoming.avatars[users.length] + '.png'
         },
         location: {
-          x: xLocation,
-          y: yLocation
+          x: xL,
+          y: yL
         },
         offer: {
           title: incoming.titles[users.length],
-          adress: xLocation + ', ' + yLocation,
+          adress: xL + ', ' + yL,
           price: getRandom(1000, 900000),
           type: incoming.types[users.length],
           rooms: incoming.rooms[users.length],
