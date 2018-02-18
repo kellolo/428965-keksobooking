@@ -18,32 +18,27 @@ var getRandom = function (min, max) {
   return Math.floor(min + Math.random() * max);
 };
 
-var generateData = function (shuffle, createUsers, users, xLocation, yLocation, avatar, title, price, uType, rooms, guests, checkIn, checkOut, photos, totalFeatures) {
+var generateData = function () {
 
-  avatar = [];
-  title = [];
-  uType = [];
-  rooms = [];
-  guests = [];
-  checkIn = [];
-  checkOut = [];
-  photos = [];
-  users = [];
-  totalFeatures = [];
+  var avatar = [];
+  var title = [];
+  var uType = [];
+  var rooms = [];
+  var guests = [];
+  var checkIn = [];
+  var checkOut = [];
+  var photos = [];
+  var users = [];
+  var totalFeatures = [];
 
   // ФУНКЦИЯ СОЗДАНИЯ МАССИВОВ ДАННЫХ ПО КАТЕГОРИЯМ С ЧАСТИЧНО НЕПОВТОРЯЮЩИМИСЯ МАССИВАМИ
 
-  shuffle = function (usersData, ava, tit, uTy, roo, gue, chIn, chOut, phot, totFeat, feat) {
+  var shuffle = function (usersData, ava, tit, totFeat, feat) {
     for (var j = 0; j < USERS;) {
 
       ava = getRandom(1, USERS);
       tit = TITLES[getRandom(0, TITLES.length)];
-      uTy = TYPE[getRandom(0, 2)];
-      roo = getRandom(1, MAXROOMS);
-      gue = getRandom(1, 10);
-      chIn = CHECKIN[getRandom(0, CHECKIN.length)];
-      chOut = CHECKOUT[getRandom(0, CHECKOUT.length)];
-      phot = PHOTOS[getRandom(1, PHOTOS.length)];
+
       usersData = [];
       totFeat = [];
 
@@ -57,12 +52,6 @@ var generateData = function (shuffle, createUsers, users, xLocation, yLocation, 
       if (avatar.indexOf(ava) < 0 && title.indexOf(tit) < 0) {
         avatar.push(ava);
         title.push(tit);
-        uType.push(uTy);
-        rooms.push(roo);
-        guests.push(gue);
-        checkIn.push(chIn);
-        checkOut.push(chOut);
-        photos.push(phot);
         totalFeatures.push(totFeat);
         j++;
       }
@@ -71,14 +60,7 @@ var generateData = function (shuffle, createUsers, users, xLocation, yLocation, 
     usersData = {
       avatars: avatar,
       titles: title,
-      prices: price,
-      types: uType,
-      rooms: rooms,
-      guests: guests,
-      in: checkIn,
-      out: checkOut,
-      features: totalFeatures,
-      photos: photos
+      features: totalFeatures
     };
 
     return usersData; // возвращает объект массивов данных по категориям
@@ -87,7 +69,7 @@ var generateData = function (shuffle, createUsers, users, xLocation, yLocation, 
 
   // ФУНКЦИЯ СОРТИРОВКИ СГЕНЕРИРОВАННЫХ ДАННЫХ ПО КОНКРЕТНЫМ ПОЛЬЗОВАТЕЛЯМ
 
-  createUsers = function (incoming, newUser) {
+  var createUsers = function (incoming, newUser) {
     incoming = shuffle();
     var xL;
     var yL;
@@ -107,14 +89,14 @@ var generateData = function (shuffle, createUsers, users, xLocation, yLocation, 
           title: incoming.titles[users.length],
           adress: xL + ', ' + yL,
           price: getRandom(1000, 900000),
-          type: incoming.types[users.length],
-          rooms: incoming.rooms[users.length],
-          guests: incoming.guests[users.length],
-          checkin: incoming.in[users.length],
-          checkout: incoming.out[users.length],
+          type: TYPE[getRandom(0, 2)],
+          rooms: getRandom(1, MAXROOMS),
+          guests: getRandom(1, 10),
+          checkin: CHECKIN[getRandom(0, CHECKIN.length)],
+          checkout: CHECKOUT[getRandom(0, CHECKOUT.length)],
           features: incoming.features[users.length],
           description: '',
-          photos: incoming.photos[users.length]
+          photos: PHOTOS[getRandom(1, PHOTOS.length)]
         }
       };
 
