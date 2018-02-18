@@ -22,12 +22,6 @@ var generateData = function () {
 
   var avatar = [];
   var title = [];
-  var uType = [];
-  var rooms = [];
-  var guests = [];
-  var checkIn = [];
-  var checkOut = [];
-  var photos = [];
   var users = [];
   var totalFeatures = [];
 
@@ -65,7 +59,6 @@ var generateData = function () {
 
     return usersData; // возвращает объект массивов данных по категориям
   };
-
 
   // ФУНКЦИЯ СОРТИРОВКИ СГЕНЕРИРОВАННЫХ ДАННЫХ ПО КОНКРЕТНЫМ ПОЛЬЗОВАТЕЛЯМ
 
