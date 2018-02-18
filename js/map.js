@@ -27,11 +27,11 @@ var generateData = function () {
 
   // ФУНКЦИЯ СОЗДАНИЯ МАССИВОВ ДАННЫХ ПО КАТЕГОРИЯМ С ЧАСТИЧНО НЕПОВТОРЯЮЩИМИСЯ МАССИВАМИ
 
-  var shuffle = function (usersData, ava, tit, totFeat, feat) {
+  var shuffle = function (usersData, totFeat, feat) {
     for (var j = 0; j < USERS;) {
 
-      ava = getRandom(1, USERS);
-      tit = TITLES[getRandom(0, TITLES.length)];
+      var ava = getRandom(1, USERS);
+      var tit = TITLES[getRandom(0, TITLES.length)];
 
       usersData = [];
       totFeat = [];
