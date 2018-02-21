@@ -127,46 +127,99 @@ var generateTemplate = function (button, avatar, users) {
 
 generateTemplate();
 
-var mapTarget = document.querySelector('.map__pins');
-mapTarget.appendChild(fragment);
+
+
+var addPins = function () {
+  if (map.classList.contains('faded') == false) {
+    var mapTarget = document.querySelector('.map__pins');
+    mapTarget.appendChild(fragment);
+  }
+  document.removeEventListener('mouseup', addPins);
+};
+
+document.addEventListener('mouseup', addPins);
 
 // модуль 4
 
-/*1. Активация страницы
-Страница Букинга может находиться в двух режимах: неактивном и активном. 
-В неактивном режиме страница находится сразу после открытия. В этом режиме отключены форма и карта и 
-единственное действие, которое можно выполнить со страницей — перетащить метку адреса. 
-Первое перетаскивание метки переводит страницу в активный режим.
 
-Перетаскивание метки — это тема домашнего задания из следующего раздела, поэтому в этом разделе мы только 
-сэмулируем перетаскивание. Любое перетаскивание состоит из трёх фаз: захвата элемента, его перемещения и 
-отпускания элемента. На данном этапе нам достаточно описать реакцию на третью фазу: отпускание элемента. 
-Для этого нужно добавить обработчик события mouseup на элемент .map__pin--main.
-
-Обработчик события mouseup должен вызывать функцию, которая будет отменять изменения DOM-элементов, описанные 
-в пункте «Неактивное состояние» технического задания.
-
-
-Состояния страницы
-Неактивное состояние. При первом открытии, страница находится в неактивном состоянии: блок с картой находится в 
-неактивном состоянии, форма подачи заявления заблокирована.
-
-Блок с картой .map содержит класс map--faded;
-Форма заполнения информации об объявлении .notice__form содержит класс notice__form--disabled;
-Поля формы .notice__form заблокированы с помощью атрибута disabled, добавленного на них или на их родительские 
-блоки fieldset.
-Единственное доступное действие в неактивном состоянии — перетаскивание метки .map__pin--main, являющейся контролом 
-указания адреса объявления. Первое перемещение метки переводит страницу в активное состояние.
-*/
-
-
-var dragPin = document.querySelector('.map__pin--main');
+var dragPinMain = document.querySelector('.map__pin--main');
 var mainForm = document.querySelector('.notice__form');
 
 var mapFadeDisable = function() {
   map.classList.remove('map--faded');
   mainForm.classList.remove('notice__form--disabled');
-  dragPin.removeEventListener('mouseup', mapFadeDisable);
+  dragPinMain.removeEventListener('mouseup', mapFadeDisable);
 };
 
-dragPin.addEventListener('mouseup', mapFadeDisable);
+dragPinMain.addEventListener('mouseup', mapFadeDisable);
+
+var dragPin = document.querySelector('.map__pin');
+
+
+
+
+dragPin.addEventListener('mousedown', function (evt) {
+  evt.preventDefault();
+
+  var startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
+
+  console.log(startCoords);
+
+  var onMouseMove = function (moveEvt) {
+    moveEvt.preventDefault();
+
+    var shift = {
+      x: startCoords.x - moveEvt.clientX,
+      y: startCoords.y - moveEvt.clientY
+    };
+
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
+
+    dragPin.style.top = (dragPin.offsetTop - shift.y) + 'px';
+    dragPin.style.left = (dragPin.offsetLeft - shift.x) + 'px';
+  };
+
+  var onMouseUp = function (upEvt) {
+    upEvt.preventDefault();
+
+    addressFill('nonFaded');
+
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+
+  };
+
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+});
+
+//вычисляем размеры
+
+var WIDTH = 40;
+var HEIGHT = 44;
+
+var COORDS = {
+  loaded: {
+    x: dragPin.offsetLeft + (WIDTH / 2), 
+    y: dragPin.offsetTop + (HEIGHT / 2)
+  } 
+};
+
+var addressInput = document.querySelector('#address');
+
+var addressFill = function (mapStatus) {
+  if (mapStatus === 'faded') {
+    addressInput.value = COORDS.loaded.x + ', ' + COORDS.loaded.y;
+  } else if (mapStatus === 'nonFaded') {
+    addressInput.value = (dragPin.offsetLeft) + ', ' + (dragPin.offsetTop + HEIGHT / 2 + 22);
+  }
+};
+
+
+document.addEventListener('load', addressFill('faded'));
