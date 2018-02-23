@@ -18,11 +18,13 @@ var getRandom = function (min, max) {
   return Math.floor(min + Math.random() * max);
 };
 
+var users = [];
+
 var generateData = function () {
 
   var avatar = [];
   var title = [];
-  var users = [];
+
   var totalFeatures = [];
 
   // ФУНКЦИЯ СОЗДАНИЯ МАССИВОВ ДАННЫХ ПО КАТЕГОРИЯМ С ЧАСТИЧНО НЕПОВТОРЯЮЩИМИСЯ МАССИВАМИ
@@ -124,10 +126,7 @@ var generateTemplate = function (button, avatar, users) {
   }
 };
 
-
 generateTemplate();
-
-
 
 var addPins = function () {
   if (map.classList.contains('faded') == false) {
@@ -158,7 +157,7 @@ var dragPin = document.querySelector('.map__pin');
 
 
 
-dragPin.addEventListener('mousedown', function (evt) {
+dragPinMain.addEventListener('mousedown', function (evt) {
   evt.preventDefault();
 
   var startCoords = {
@@ -181,8 +180,8 @@ dragPin.addEventListener('mousedown', function (evt) {
       y: moveEvt.clientY
     };
 
-    dragPin.style.top = (dragPin.offsetTop - shift.y) + 'px';
-    dragPin.style.left = (dragPin.offsetLeft - shift.x) + 'px';
+    dragPinMain.style.top = (dragPinMain.offsetTop - shift.y) + 'px';
+    dragPinMain.style.left = (dragPinMain.offsetLeft - shift.x) + 'px';
   };
 
   var onMouseUp = function (upEvt) {
@@ -206,8 +205,8 @@ var HEIGHT = 44;
 
 var COORDS = {
   loaded: {
-    x: dragPin.offsetLeft + (WIDTH / 2), 
-    y: dragPin.offsetTop + (HEIGHT / 2)
+    x: dragPinMain.offsetLeft + (WIDTH / 2), 
+    y: dragPinMain.offsetTop + (HEIGHT / 2)
   } 
 };
 
@@ -217,9 +216,41 @@ var addressFill = function (mapStatus) {
   if (mapStatus === 'faded') {
     addressInput.value = COORDS.loaded.x + ', ' + COORDS.loaded.y;
   } else if (mapStatus === 'nonFaded') {
-    addressInput.value = (dragPin.offsetLeft) + ', ' + (dragPin.offsetTop + HEIGHT / 2 + 22);
+    addressInput.value = (dragPinMain.offsetLeft) + ', ' + (dragPinMain.offsetTop + HEIGHT / 2 + 22);
   }
 };
 
-
 document.addEventListener('load', addressFill('faded'));
+
+var formFill = function (evt) {
+  var obj = evt.target;
+  if (obj.parentNode.classList.contains('map__pin') == true && obj.parentNode.classList.contains('map__pin--main') == false) {
+    var clickedUser = obj.src.substring(obj.src.length - 22, obj.src.length);
+
+    for (var i = 0; i < users.length; i++) {
+      if (clickedUser == users[i].author.avatar) {
+        console.log(users[i].author.avatar + ' из объекта');
+        document.querySelector('#title').value = users[i].offer.title;
+        document.querySelector('#address').value = users[i].offer.adress;
+        document.querySelector('#type').value = users[i].offer.type;
+        document.querySelector('#price').value = users[i].offer.title;
+        document.querySelector('#room_number').value = users[i].offer.title;
+        document.querySelector('#capacity').value = users[i].offer.title;
+        document.querySelector('#timein').value = users[i].offer.title;
+        document.querySelector('#timeout').value = users[i].offer.title;
+      }
+    }
+    console.log(clickedUser);
+  }
+  
+};
+
+document.addEventListener('click', formFill);
+
+/*  var container = document.getElementById('container');
+
+  container.onclick = function(e){
+    if(e.target.tagName === 'LI'){
+      document.getElementById('mytext').value = e.target.innerHTML;
+    }
+  } */
