@@ -66,10 +66,8 @@ var generateData = function () {
 
   var createUsers = function (incoming, newUser) {
     incoming = shuffle();
-    var xL;
-    var yL;
-    while (users.length < USERS) {
 
+    while (users.length < USERS) {
       newUser = {
         author: {
           avatar: 'img/avatars/user0' + incoming.avatars[users.length] + '.png'
@@ -103,12 +101,12 @@ var generateData = function () {
 
 var fragment = document.createDocumentFragment();
 
-var generateTemplate = function (button, avatar, users) {
+var generateTemplate = function () {
   users = generateData();
 
   for (var i = 0; i < USERS; i++) {
-    button = document.createElement('button');
-    avatar = document.createElement('img');
+    var button = document.createElement('button');
+    var avatar = document.createElement('img');
     button.style.left = users[i].location.x + 'px';
     button.style.top = users[i].location.y + 'px';
     button.classList.add('map__pin');
@@ -126,7 +124,7 @@ var generateTemplate = function (button, avatar, users) {
 generateTemplate();
 
 var addPins = function () {
-  if (map.classList.contains('faded') == false) {
+  if (map.classList.contains('faded') === false) {
     var mapTarget = document.querySelector('.map__pins');
     mapTarget.appendChild(fragment);
   }
@@ -140,15 +138,13 @@ document.addEventListener('mouseup', addPins);
 var dragPinMain = document.querySelector('.map__pin--main');
 var mainForm = document.querySelector('.notice__form');
 
-var mapFadeDisable = function() {
+var mapFadeDisable = function () {
   map.classList.remove('map--faded');
   mainForm.classList.remove('notice__form--disabled');
   dragPinMain.removeEventListener('mouseup', mapFadeDisable);
 };
 
 dragPinMain.addEventListener('mouseup', mapFadeDisable);
-
-var dragPin = document.querySelector('.map__pin');
 
 dragPinMain.addEventListener('mousedown', function (evt) {
   evt.preventDefault();
@@ -190,16 +186,16 @@ dragPinMain.addEventListener('mousedown', function (evt) {
   document.addEventListener('mouseup', onMouseUp);
 });
 
-//вычисляем размеры
+//  вычисляем размеры
 
 var WIDTH = 40;
 var HEIGHT = 44;
 
 var COORDS = {
   loaded: {
-    x: dragPinMain.offsetLeft + (WIDTH / 2), 
+    x: dragPinMain.offsetLeft + (WIDTH / 2),
     y: dragPinMain.offsetTop + (HEIGHT / 2)
-  } 
+  }
 };
 
 var addressInput = document.querySelector('#address');
@@ -216,11 +212,11 @@ document.addEventListener('load', addressFill('faded'));
 
 var formFill = function (evt) {
   var obj = evt.target;
-  if (obj.parentNode.classList.contains('map__pin') == true && obj.parentNode.classList.contains('map__pin--main') == false) {
+  if (obj.parentNode.classList.contains('map__pin') === true && obj.parentNode.classList.contains('map__pin--main') === false) {
     var clickedUser = obj.src.substring(obj.src.length - 22, obj.src.length);
 
     for (var i = 0; i < users.length; i++) {
-      if (clickedUser == users[i].author.avatar) {
+      if (clickedUser === users[i].author.avatar) {
         document.querySelector('#title').value = users[i].offer.title;
         document.querySelector('#address').value = users[i].location.x + ', ' + users[i].location.y;
         document.querySelector('#type').value = users[i].offer.type;
@@ -232,15 +228,6 @@ var formFill = function (evt) {
       }
     }
   }
-  
 };
 
 document.addEventListener('click', formFill);
-
-/*  var container = document.getElementById('container');
-
-  container.onclick = function(e){
-    if(e.target.tagName === 'LI'){
-      document.getElementById('mytext').value = e.target.innerHTML;
-    }
-  } */
