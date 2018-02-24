@@ -6,7 +6,7 @@ var CHECKIN = ['12:00', '13:00', '14:00'];
 var CHECKOUT = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-var MAXROOMS = 5;
+var MAXROOMS = 3;
 
 
 var map = document.querySelector('.map');
@@ -24,31 +24,31 @@ var generateData = function () {
 
   var avatar = [];
   var title = [];
-
+  var singleFeatures = [];
   var totalFeatures = [];
+  var usersData = [];
+
 
   // ФУНКЦИЯ СОЗДАНИЯ МАССИВОВ ДАННЫХ ПО КАТЕГОРИЯМ С ЧАСТИЧНО НЕПОВТОРЯЮЩИМИСЯ МАССИВАМИ
 
-  var shuffle = function (usersData, totFeat, feat) {
+  var shuffle = function () {
     for (var j = 0; j < USERS;) {
 
-      var ava = getRandom(1, USERS);
-      var tit = TITLES[getRandom(0, TITLES.length)];
+      var feature;
+      var avatarRnd = getRandom(1, USERS);
+      var titleRnd = TITLES[getRandom(0, TITLES.length)];
 
-      usersData = [];
-      totFeat = [];
-
-      while (totFeat.length < getRandom(0, FEATURES.length)) {
-        feat = FEATURES[getRandom(0, FEATURES.length)];
-        if (totFeat.indexOf(feat) < 0) {
-          totFeat.push(feat);
+      while (singleFeatures.length < getRandom(0, FEATURES.length)) {
+        feature = FEATURES[getRandom(0, FEATURES.length)];
+        if (singleFeatures.indexOf(feature) < 0) {
+          singleFeatures.push(feature);
         }
       }
 
-      if (avatar.indexOf(ava) < 0 && title.indexOf(tit) < 0) {
-        avatar.push(ava);
-        title.push(tit);
-        totalFeatures.push(totFeat);
+      if (avatar.indexOf(avatarRnd) < 0 && title.indexOf(titleRnd) < 0) {
+        avatar.push(avatarRnd);
+        title.push(titleRnd);
+        totalFeatures.push(singleFeatures);
         j++;
       }
     }
@@ -69,24 +69,21 @@ var generateData = function () {
     var xL;
     var yL;
     while (users.length < USERS) {
-      xL = getRandom(300, 600);
-      yL = getRandom(300, 350);
 
       newUser = {
         author: {
           avatar: 'img/avatars/user0' + incoming.avatars[users.length] + '.png'
         },
         location: {
-          x: xL,
-          y: yL
+          x: getRandom(300, 600),
+          y: getRandom(300, 350)
         },
         offer: {
           title: incoming.titles[users.length],
-          adress: xL + ', ' + yL,
           price: getRandom(1000, 900000),
           type: TYPE[getRandom(0, 2)],
           rooms: getRandom(1, MAXROOMS),
-          guests: getRandom(1, 10),
+          guests: getRandom(0, 3),
           checkin: CHECKIN[getRandom(0, CHECKIN.length)],
           checkout: CHECKOUT[getRandom(0, CHECKOUT.length)],
           features: incoming.features[users.length],
@@ -140,7 +137,6 @@ document.addEventListener('mouseup', addPins);
 
 // модуль 4
 
-
 var dragPinMain = document.querySelector('.map__pin--main');
 var mainForm = document.querySelector('.notice__form');
 
@@ -154,9 +150,6 @@ dragPinMain.addEventListener('mouseup', mapFadeDisable);
 
 var dragPin = document.querySelector('.map__pin');
 
-
-
-
 dragPinMain.addEventListener('mousedown', function (evt) {
   evt.preventDefault();
 
@@ -165,7 +158,6 @@ dragPinMain.addEventListener('mousedown', function (evt) {
     y: evt.clientY
   };
 
-  console.log(startCoords);
 
   var onMouseMove = function (moveEvt) {
     moveEvt.preventDefault();
@@ -229,18 +221,16 @@ var formFill = function (evt) {
 
     for (var i = 0; i < users.length; i++) {
       if (clickedUser == users[i].author.avatar) {
-        console.log(users[i].author.avatar + ' из объекта');
         document.querySelector('#title').value = users[i].offer.title;
-        document.querySelector('#address').value = users[i].offer.adress;
+        document.querySelector('#address').value = users[i].location.x + ', ' + users[i].location.y;
         document.querySelector('#type').value = users[i].offer.type;
-        document.querySelector('#price').value = users[i].offer.title;
-        document.querySelector('#room_number').value = users[i].offer.title;
-        document.querySelector('#capacity').value = users[i].offer.title;
-        document.querySelector('#timein').value = users[i].offer.title;
-        document.querySelector('#timeout').value = users[i].offer.title;
+        document.querySelector('#price').value = users[i].offer.price;
+        document.querySelector('#room_number').value = users[i].offer.rooms;
+        document.querySelector('#capacity').value = users[i].offer.guests;
+        document.querySelector('#timein').value = users[i].offer.checkin;
+        document.querySelector('#timeout').value = users[i].offer.checkout;
       }
     }
-    console.log(clickedUser);
   }
   
 };
