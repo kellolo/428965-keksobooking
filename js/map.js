@@ -24,7 +24,7 @@ var generateData = function () {
 
   var avatar = [];
   var title = [];
-  var singleFeatures = [];
+ 
   var totalFeatures = [];
   var usersData = [];
 
@@ -33,7 +33,7 @@ var generateData = function () {
 
   var shuffle = function () {
     for (var j = 0; j < USERS;) {
-
+      var singleFeatures = [];
       var feature;
       var avatarRnd = getRandom(1, USERS);
       var titleRnd = TITLES[getRandom(0, TITLES.length)];
@@ -92,6 +92,7 @@ var generateData = function () {
 
       users.push(newUser);
     }
+
   };
 
   createUsers();
@@ -105,6 +106,7 @@ var generateTemplate = function () {
   users = generateData();
 
   for (var i = 0; i < USERS; i++) {
+    console.log(users[i].offer.features);
     var button = document.createElement('button');
     var avatar = document.createElement('img');
     button.style.left = users[i].location.x + 'px';
@@ -217,6 +219,7 @@ var formFill = function (evt) {
 
     for (var i = 0; i < users.length; i++) {
       if (clickedUser === users[i].author.avatar) {
+        
         document.querySelector('#title').value = users[i].offer.title;
         document.querySelector('#address').value = users[i].location.x + ', ' + users[i].location.y;
         document.querySelector('#type').value = users[i].offer.type;
@@ -225,9 +228,30 @@ var formFill = function (evt) {
         document.querySelector('#capacity').value = users[i].offer.guests;
         document.querySelector('#timein').value = users[i].offer.checkin;
         document.querySelector('#timeout').value = users[i].offer.checkout;
+
+        for (var k = 0; k < FEATURES.length; k++){
+          document.querySelector('#filter-' + FEATURES[k]).checked = '';
+        }
+
+        for (var j = 0; j < users[i].offer.features.length; j++) {
+          var currentFeature = users[i].offer.features[j];
+          var currentCheckbox = document.querySelector('#filter-' + currentFeature);
+          currentCheckbox.checked = 'checked';
+        }
       }
     }
   }
 };
 
 document.addEventListener('click', formFill);
+
+//  Отправка формы
+
+var submitButton = document.querySelector('.form__submit');
+
+var formSend = function () {
+  var userSubmit = {};
+};
+
+submitButton.addEventListener('click', formSend);
+
